@@ -14,26 +14,37 @@ describe("Eternal Storage", () => {
         // Deploy Ballot
         const BallotFactory = await ethers.getContractFactory("Ballot");
         ballot = await BallotFactory.deploy(eternalStorage.address);
-        console.log(ballot.address);
     });
 
-    it("Should vote, increasing count", async () => {
+    it("Should vote, increase count and retrieve count", async () => {
         let oldVoteCount = await ballot.getNumberOfVotes();
         expect(oldVoteCount).to.be.equals(0);
         // Vote
-        await ballot.vote();
+        let count = 0;
+        while (count++ < 3) {
+            await ballot.vote();
+        }
         let newVoteCount = await ballot.getNumberOfVotes();
+
         expect(newVoteCount).to.be.gt(oldVoteCount);
-        expect(newVoteCount).to.be.equals(1);
+        expect(newVoteCount).to.be.equals(3);
 
     });
 
     it("Should get number of Votes", async () => {
-        expect(true).to.be.false;
+        let voteCount = await ballot.getNumberOfVotes();
+        expect(voteCount).to.be.gt(0);
     });
 
     it("Should deploy a new ballot contract and retrieve old value", async () => {
-        expect(true).to.be.false;
+        const NewBallotFactory = await ethers.getContractFactory("Ballot");
+        let newBallot = await NewBallotFactory.deploy(eternalStorage.address);
+
+        expect(await newBallot.getNumberOfVotes()).to.be.eq(3);
+
+        await newBallot.vote();
+
+        expect(await newBallot.getNumberOfVotes()).to.be.eq(4);
     });
 
 });
