@@ -10,7 +10,7 @@ contract Dispatcher is Upgradeable {
     }
 
     function initialize() public pure override {
-        // Should only be called by on target contracts, not on the dispatcher
+        // Should only be called on target contracts, not on the dispatcher
         assert(false);
     }
 
