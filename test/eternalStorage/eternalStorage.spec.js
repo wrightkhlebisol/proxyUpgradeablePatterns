@@ -1,6 +1,4 @@
 const { expect } = require("chai");
-const { ethers } = require("hardhat");
-// const { ethers } = require("hardhat");
 
 describe("Eternal Storage", () => {
     let eternalStorage;
